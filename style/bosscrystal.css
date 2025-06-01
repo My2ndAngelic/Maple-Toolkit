@@ -53,19 +53,23 @@
 }
 
 /* Dark mode styles */
+html[data-theme="dark"] .controls-container,
 body.dark-mode .controls-container {
     background-color: #2a2a2a;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+html[data-theme="dark"] .total-value,
 body.dark-mode .total-value {
     color: #3399ff;
 }
 
+html[data-theme="dark"] .reset-button,
 body.dark-mode .reset-button {
     background-color: #d63031;
 }
 
+html[data-theme="dark"] .reset-button:hover,
 body.dark-mode .reset-button:hover {
     background-color: #ff4d4d;
 }

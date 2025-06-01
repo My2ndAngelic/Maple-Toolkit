@@ -1,7 +1,6 @@
 // Common UI elements and functionality
 export const navbar = `
   <div id="navbar">    
-    <button id="overviewBtn" onclick="window.location.href='overview.html'">Overview</button>
     <button id="bosscrystalBtn" onclick="window.location.href='bosscrystal.html'">Boss Crystal</button>
     <button id="darkModeToggle">🌙 Dark Mode</button>
   </div>
@@ -45,7 +44,7 @@ export function initializeTheme() {
     const isDark = localStorage.getItem('darkMode') === 'true';
     applyTheme(isDark);
     
-    // Set up theme toggle - only if we're not on the overview page (which has its own toggle)
+    // Set up theme toggle for all pages except overview (which has its own)
     if (!document.getElementById('charTable')) {
         darkToggleBtn.addEventListener('click', () => {
             const currentTheme = localStorage.getItem('darkMode') === 'true';

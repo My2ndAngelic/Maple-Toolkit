@@ -139,7 +139,6 @@ async function loadBossCrystalData() {
 // Initialize the page when DOM content is loaded
 function initializePage() {
     loadBossCrystalData();
-    initializeTheme();
     
     // Reset button event listener
     const resetButton = document.getElementById('resetSelections');
