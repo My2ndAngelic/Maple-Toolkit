@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>MapleStory Boss Crystal Tracker</title>
+    <link rel="stylesheet" href="../style/style.css" id="themeStylesheet">
+    <link rel="stylesheet" href="../style/bosscrystal.css">
+    <script type="module">
+        import { initializeUI } from "../script/ui.js";
+        import { initializePage } from "../script/bosscrystal.js";
+        
+        // Initialize the page when DOM content is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeUI();
+            initializePage();
+        });
+    </script>
+</head>
+<body>
+    <div id="container">
+        <!-- Navbar will be added by ui.js -->
+        
+        <h1>Boss Crystal Meso Values</h1>
+        
+        <div class="controls-container">
+            <div class="heroic-mode-container">
+                <input type="checkbox" id="heroicMode">
+                <label for="heroicMode">Heroic Mode (5x Meso)</label>
+            </div>
+            <div class="total-container">
+                <span>Total Meso: </span>
+                <span id="totalMeso" class="total-value">0</span>
+            </div>
+            <button id="resetSelections" class="reset-button">Reset Selections</button>
+        </div>
+        
+        <div id="errorMessage" style="color: red;"></div>
+        
+        <table id="bossTable" class="data-table">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Boss</th>
+                    <th>Difficulty</th>
+                    <th>Meso Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

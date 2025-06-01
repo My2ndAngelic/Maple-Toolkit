@@ -1,0 +1,224 @@
+/* Global light mode styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+#container {
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Navigation bar */
+#navbar {
+    background-color: #f4f4f4;
+    padding: 10px 20px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+#navbar button {
+    background-color: #007acc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#navbar button:hover {
+    background-color: #005f99;
+}
+
+#darkModeToggle {
+    margin-left: auto;
+}
+
+#helpBtn {
+    margin-left: auto;
+}
+
+#aboutBtn {
+    margin-left: 10px;
+}
+
+/* When help, about and dark mode buttons are present, only the first should have auto margin */
+#aboutBtn + #darkModeToggle {
+    margin-left: 10px;
+}
+
+/* Top navigation bar - keeping for backward compatibility */
+#topNavbar {
+    background-color: #f4f4f4;
+    padding: 10px 20px;
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+#topNavbar button {
+    background-color: #007acc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#topNavbar button:hover {
+    background-color: #005f99;
+}
+
+/* Symbol max styling for both arcane and sacred symbols */
+.data-table td.symbol-max {
+    background-color: #4caf50 !important;
+    font-weight: bold !important;
+}
+
+h1 {
+    margin-top: 0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* View buttons */
+#viewButtons {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#viewButtons button {
+    background-color: #007acc;
+    color: white;
+    border: none;
+    margin: 0 5px;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#viewButtons button:hover {
+    background-color: #005f99;
+}
+
+/* Table common styles */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    text-align: left;
+    font-size: 14px;
+    color: #000000;
+}
+
+/* First column should always be bold */
+.data-table td:first-child,
+.data-table th:first-child {
+    font-weight: bold;
+}
+
+/* Header styles */
+.data-table thead th {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+}
+
+/* Alternating row colors */
+.data-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: white;
+}
+
+/* Hidden class for views */
+.hidden {
+    display: none;
+}
+
+/* Dropdown menu styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown #equipmentBtn, .dropdown #symbolsBtn {
+    height: 100%;
+    margin: 0;
+    background-color: #007acc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    z-index: 1;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover button {
+    background-color: #005f99;
+}
+
+.symbol-max {
+    background-color: #2e7d32; /* Dark Green */
+    color: #ffffff;
+}

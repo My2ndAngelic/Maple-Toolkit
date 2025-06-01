@@ -2,26 +2,7 @@
 export const navbar = `
   <div id="navbar">    
     <button id="overviewBtn" onclick="window.location.href='overview.html'">Overview</button>
-    <button id="progressionBtn" onclick="window.location.href='progression.html'">Progression</button>
-    <div class="dropdown">
-      <button id="equipmentBtn">Equipment ▼</button>
-      <div class="dropdown-content">
-        <a href="armor.html">Armor</a>
-        <a href="accessory.html">Accessory</a>
-        <a href="cash.html">Cash</a>
-      </div>
-    </div>
-    <div class="dropdown">
-      <button id="symbolsBtn">Symbols ▼</button>
-      <div class="dropdown-content">
-        <a href="arcane.html">Arcane</a>
-        <a href="sacred.html">Sacred</a>
-        <a href="grandsacred.html">Grand Sacred</a>
-      </div>
-    </div>
-    <button id="innerabilityBtn" onclick="window.location.href='innerability.html'">Inner Ability</button>
-    <button id="helpBtn" onclick="window.location.href='help.html'">Help</button>
-    <button id="aboutBtn" onclick="window.location.href='about.html'">About</button>
+    <button id="bosscrystalBtn" onclick="window.location.href='bosscrystal.html'">Boss Crystal</button>
     <button id="darkModeToggle">🌙 Dark Mode</button>
   </div>
 `;
