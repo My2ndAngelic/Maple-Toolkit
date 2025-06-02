@@ -1,7 +1,7 @@
 // Common UI elements and functionality
 export const navbar = `
   <div id="navbar">    
-    <button id="bosscrystalBtn" onclick="window.location.href='bosscrystal.html'">Boss Crystal</button>
+    <button id="bosscrystalBtn" onclick="window.location.href='bosscrystal_weekly.html'">Boss Crystal</button>
     <button id="darkModeToggle">🌙 Dark Mode</button>
   </div>
 `;

@@ -195,7 +195,7 @@ function restoreSelectionsFromStorage() {
 async function loadBossCrystalData() {
     try {
         // Load the boss crystal data
-        allBossData = await loadCSV('bosscrystal.csv');
+        allBossData = await loadCSV('bosscrystal_weekly.csv');
         
         // Get the table body
         const tbody = prepareTable('bossTable');
