@@ -12,15 +12,101 @@ function formatNumber(num) {
 let allBossData = [];
 let selectedBosses = new Map(); // Maps boss name to selected difficulty
 let heroicModeActive = false;
+const CRYSTAL_LIMIT = 14; // New game limit
+
+// Update the crystal counter and apply visual indicators
+function updateCrystalCounter() {
+    const crystalCountElement = document.getElementById('crystalCount');
+    const crystalCounterContainer = document.querySelector('.crystal-counter');
+    const count = selectedBosses.size;
+    
+    if (crystalCountElement) {
+        crystalCountElement.textContent = count;
+        
+        // Toggle warning style if over limit
+        if (crystalCounterContainer) {
+            crystalCounterContainer.classList.toggle('limit-reached', count > CRYSTAL_LIMIT);
+        }
+    }
+    
+    // Handle visual indicators for exceeding crystal limit
+    if (count > CRYSTAL_LIMIT) {
+        markLowestCrystals(count - CRYSTAL_LIMIT);
+    } else {
+        // Clear all crossed-out indicators
+        document.querySelectorAll('tr.crossed-out').forEach(row => {
+            row.classList.remove('crossed-out');
+        });
+    }
+}
+
+// Mark the N lowest value crystals as "crossed out"
+function markLowestCrystals(numberOfLowest) {
+    // Clear any existing markings
+    document.querySelectorAll('tr.crossed-out').forEach(row => {
+        row.classList.remove('crossed-out');
+    });
+    
+    if (numberOfLowest <= 0) return;
+    
+    // Create an array of selected bosses with their meso values
+    const selectedBossesArray = [];
+    selectedBosses.forEach((data, bossName) => {
+        selectedBossesArray.push({
+            boss: bossName,
+            difficulty: data.difficulty,
+            meso: parseInt(data.meso)
+        });
+    });
+    
+    // Sort by meso value (ascending)
+    selectedBossesArray.sort((a, b) => a.meso - b.meso);
+    
+    // Mark the lowest N bosses
+    for (let i = 0; i < numberOfLowest && i < selectedBossesArray.length; i++) {
+        const boss = selectedBossesArray[i];
+        const checkbox = document.querySelector(
+            `input[data-boss="${boss.boss}"][data-difficulty="${boss.difficulty}"]`
+        );
+        
+        if (checkbox) {
+            // Find the parent row and mark it
+            const row = checkbox.closest('tr');
+            if (row) {
+                row.classList.add('crossed-out');
+            }
+        }
+    }
+}
 
 // Calculate and display total meso
 function updateTotalMeso() {
     let total = 0;
     
-    // Sum up the meso values of all selected bosses
-    selectedBosses.forEach((difficultyObj) => {
-        total += parseInt(difficultyObj.meso);
-    });
+    // If we have more than the limit, only count the top CRYSTAL_LIMIT bosses by meso value
+    if (selectedBosses.size > CRYSTAL_LIMIT) {
+        // Create an array of selected bosses with their meso values
+        const selectedBossesArray = [];
+        selectedBosses.forEach((data, bossName) => {
+            selectedBossesArray.push({
+                boss: bossName,
+                meso: parseInt(data.meso)
+            });
+        });
+        
+        // Sort by meso value (descending)
+        selectedBossesArray.sort((a, b) => b.meso - a.meso);
+        
+        // Sum up the top CRYSTAL_LIMIT bosses
+        for (let i = 0; i < CRYSTAL_LIMIT && i < selectedBossesArray.length; i++) {
+            total += selectedBossesArray[i].meso;
+        }
+    } else {
+        // Sum up all selected bosses
+        selectedBosses.forEach((difficultyObj) => {
+            total += parseInt(difficultyObj.meso);
+        });
+    }
     
     // Apply heroic mode multiplier if active
     if (heroicModeActive) {
@@ -32,6 +118,11 @@ function updateTotalMeso() {
     if (totalElement) {
         totalElement.textContent = formatNumber(total);
     }
+    
+    // Update the crystal counter
+    updateCrystalCounter();
+    // Save state after updating
+    saveSelectionsToStorage();
 }
 
 // Handle boss selection
@@ -56,7 +147,7 @@ function handleBossSelection(bossName, difficulty, meso, checkbox) {
         selectedBosses.delete(bossName);
     }
     
-    // Update the total
+    // Update the total and counter
     updateTotalMeso();
 }
 
@@ -70,6 +161,35 @@ function toggleHeroicMode(checkbox) {
         const baseMeso = parseInt(element.dataset.baseMeso);
         element.textContent = formatNumber(heroicModeActive ? baseMeso * 5 : baseMeso);
     });
+    saveSelectionsToStorage();
+}
+
+// Save current selections and heroic mode to localStorage
+function saveSelectionsToStorage() {
+    const selections = Array.from(selectedBosses.entries()).map(([boss, data]) => ({
+        boss,
+        difficulty: data.difficulty,
+        meso: data.meso
+    }));
+    localStorage.setItem('bossCrystalSelections', JSON.stringify(selections));
+    localStorage.setItem('heroicModeActive', JSON.stringify(heroicModeActive));
+}
+
+// Restore selections and heroic mode from localStorage
+function restoreSelectionsFromStorage() {
+    const selections = JSON.parse(localStorage.getItem('bossCrystalSelections') || '[]');
+    const heroic = JSON.parse(localStorage.getItem('heroicModeActive') || 'false');
+    selectedBosses.clear();
+    selections.forEach(sel => {
+        selectedBosses.set(sel.boss, { difficulty: sel.difficulty, meso: sel.meso });
+        // Check the corresponding checkbox
+        const checkbox = document.querySelector(`input[data-boss="${sel.boss}"][data-difficulty="${sel.difficulty}"]`);
+        if (checkbox) checkbox.checked = true;
+    });
+    heroicModeActive = heroic;
+    const heroicCheckbox = document.getElementById('heroicMode');
+    if (heroicCheckbox) heroicCheckbox.checked = heroicModeActive;
+    updateTotalMeso();
 }
 
 async function loadBossCrystalData() {
@@ -138,7 +258,10 @@ async function loadBossCrystalData() {
 
 // Initialize the page when DOM content is loaded
 function initializePage() {
-    loadBossCrystalData();
+    loadBossCrystalData().then(() => {
+        // Restore selections after table is built
+        restoreSelectionsFromStorage();
+    });
     
     // Reset button event listener
     const resetButton = document.getElementById('resetSelections');
@@ -152,8 +275,15 @@ function initializePage() {
             // Clear selected bosses
             selectedBosses.clear();
             
-            // Update total
+            // Clear crossed-out rows
+            document.querySelectorAll('tr.crossed-out').forEach(row => {
+                row.classList.remove('crossed-out');
+            });
+            
+            // Update total and counter
             updateTotalMeso();
+            // Save reset state
+            saveSelectionsToStorage();
         });
     }
 }

@@ -28,8 +28,25 @@
 }
 
 .total-container {
-    font-size: 1.2em;
+    /* font-size: 1.2em; */
     font-weight: bold;
+}
+
+.crystal-counter {
+    /* font-size: 1.2em; */
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+#crystalCount {
+    /* font-size: 1.4em; */
+    color: #007acc;
+    margin-right: 4px;
+}
+
+.crystal-counter.limit-reached #crystalCount {
+    color: #d63031;
 }
 
 .total-value {
@@ -83,4 +100,31 @@ body.dark-mode .reset-button:hover {
 
 #bossTable td:first-child {
     text-align: center;
+}
+
+/* Crossed-out boss styles */
+tr.crossed-out {
+    position: relative;
+    opacity: 0.7;
+}
+
+tr.crossed-out td {
+    position: relative;
+}
+
+tr.crossed-out::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px; /* Increased from 1px to 3px for thickness */
+    background-color: rgba(255, 0, 0, 0.8); /* More red, less transparent */
+    z-index: 1;
+}
+
+/* Dark mode styles for crossed-out items */
+html[data-theme="dark"] tr.crossed-out::after,
+body.dark-mode tr.crossed-out::after {
+    background-color: rgba(224, 6, 6, 0.8); /* Slightly more opaque */
 }
