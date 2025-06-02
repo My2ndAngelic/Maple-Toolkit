@@ -128,3 +128,17 @@ html[data-theme="dark"] tr.crossed-out::after,
 body.dark-mode tr.crossed-out::after {
     background-color: rgba(224, 6, 6, 0.8); /* Slightly more opaque */
 }
+
+.center-header {
+    text-align: center;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.meso-value {
+    display: inline-block;
+    min-width: 80px;
+    text-align: right;
+}

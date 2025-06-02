@@ -225,6 +225,7 @@ async function loadBossCrystalData() {
             difficultyCell.textContent = boss.Difficulty;
             
             const mesoCell = document.createElement('td');
+            mesoCell.classList.add('right-align');
             const mesoSpan = document.createElement('span');
             mesoSpan.textContent = formatNumber(boss.Meso);
             mesoSpan.classList.add('numeric', 'meso-value');
