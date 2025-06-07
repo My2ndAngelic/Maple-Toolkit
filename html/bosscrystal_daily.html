@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title>Weekly Boss Crystal</title>
+    <title>Daily Boss Crystal</title>
     <link rel="stylesheet" href="../style/style.css" id="themeStylesheet">
     <link rel="stylesheet" href="../style/bosscrystal.css">
     <script type="module">
@@ -14,11 +14,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             // First initialize UI (includes theme)
             initializeUI();
-            // Then initialize the boss crystal page functionality (weekly mode)
+            // Then initialize the boss crystal page functionality (daily mode)
             initializePage({
-                mode: 'weekly',
-                csv: 'bosscrystal_weekly.csv',
-                limit: 14
+                mode: 'daily',
+                csv: 'bosscrystal_daily.csv',
+                limit: null // No limit for daily
             });
         });
     </script>
@@ -26,16 +26,14 @@
 <body>
     <div id="container">
         <!-- Navbar will be added by ui.js -->
-        
-        <h1>Weekly Boss Crystal</h1>
-        
+        <h1>Daily Boss Crystal</h1>
         <div class="controls-container">
             <div class="heroic-mode-container">
                 <input type="checkbox" id="heroicMode">
                 <label for="heroicMode">Heroic Mode (5x Meso)</label>
             </div>
             <div class="crystal-counter">
-                <span id="crystalCount">0</span><span>/14 Crystals Selected</span>
+                <span id="crystalCount">0</span><span> Crystals Selected</span>
             </div>
             <div class="total-container">
                 <span>Total Meso: </span>
@@ -43,9 +41,7 @@
             </div>
             <button id="resetSelections" class="reset-button">Reset Selections</button>
         </div>
-        
         <div id="errorMessage" style="color: red;"></div>
-        
         <table id="bossTable" class="data-table">
             <thead>
                 <tr>

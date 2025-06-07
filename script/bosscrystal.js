@@ -12,28 +12,30 @@ function formatNumber(num) {
 let allBossData = [];
 let selectedBosses = new Map(); // Maps boss name to selected difficulty
 let heroicModeActive = false;
-const CRYSTAL_LIMIT = 14; // New game limit
+
+// Refactored config for daily/weekly
+const DEFAULT_CONFIG = {
+    mode: 'weekly',
+    csv: 'bosscrystal_weekly.csv',
+    limit: 14
+};
+
+let config = { ...DEFAULT_CONFIG };
 
 // Update the crystal counter and apply visual indicators
 function updateCrystalCounter() {
     const crystalCountElement = document.getElementById('crystalCount');
     const crystalCounterContainer = document.querySelector('.crystal-counter');
     const count = selectedBosses.size;
-    
     if (crystalCountElement) {
         crystalCountElement.textContent = count;
-        
-        // Toggle warning style if over limit
-        if (crystalCounterContainer) {
-            crystalCounterContainer.classList.toggle('limit-reached', count > CRYSTAL_LIMIT);
+        if (config.limit && crystalCounterContainer) {
+            crystalCounterContainer.classList.toggle('limit-reached', count > config.limit);
         }
     }
-    
-    // Handle visual indicators for exceeding crystal limit
-    if (count > CRYSTAL_LIMIT) {
-        markLowestCrystals(count - CRYSTAL_LIMIT);
+    if (config.limit && count > config.limit) {
+        markLowestCrystals(count - config.limit);
     } else {
-        // Clear all crossed-out indicators
         document.querySelectorAll('tr.crossed-out').forEach(row => {
             row.classList.remove('crossed-out');
         });
@@ -42,14 +44,11 @@ function updateCrystalCounter() {
 
 // Mark the N lowest value crystals as "crossed out"
 function markLowestCrystals(numberOfLowest) {
-    // Clear any existing markings
+    if (!config.limit) return; // No marking for daily
     document.querySelectorAll('tr.crossed-out').forEach(row => {
         row.classList.remove('crossed-out');
     });
-    
     if (numberOfLowest <= 0) return;
-    
-    // Create an array of selected bosses with their meso values
     const selectedBossesArray = [];
     selectedBosses.forEach((data, bossName) => {
         selectedBossesArray.push({
@@ -58,19 +57,13 @@ function markLowestCrystals(numberOfLowest) {
             meso: parseInt(data.meso)
         });
     });
-    
-    // Sort by meso value (ascending)
     selectedBossesArray.sort((a, b) => a.meso - b.meso);
-    
-    // Mark the lowest N bosses
     for (let i = 0; i < numberOfLowest && i < selectedBossesArray.length; i++) {
         const boss = selectedBossesArray[i];
         const checkbox = document.querySelector(
             `input[data-boss="${boss.boss}"][data-difficulty="${boss.difficulty}"]`
         );
-        
         if (checkbox) {
-            // Find the parent row and mark it
             const row = checkbox.closest('tr');
             if (row) {
                 row.classList.add('crossed-out');
@@ -82,10 +75,7 @@ function markLowestCrystals(numberOfLowest) {
 // Calculate and display total meso
 function updateTotalMeso() {
     let total = 0;
-    
-    // If we have more than the limit, only count the top CRYSTAL_LIMIT bosses by meso value
-    if (selectedBosses.size > CRYSTAL_LIMIT) {
-        // Create an array of selected bosses with their meso values
+    if (config.limit && selectedBosses.size > config.limit) {
         const selectedBossesArray = [];
         selectedBosses.forEach((data, bossName) => {
             selectedBossesArray.push({
@@ -93,35 +83,23 @@ function updateTotalMeso() {
                 meso: parseInt(data.meso)
             });
         });
-        
-        // Sort by meso value (descending)
         selectedBossesArray.sort((a, b) => b.meso - a.meso);
-        
-        // Sum up the top CRYSTAL_LIMIT bosses
-        for (let i = 0; i < CRYSTAL_LIMIT && i < selectedBossesArray.length; i++) {
+        for (let i = 0; i < config.limit && i < selectedBossesArray.length; i++) {
             total += selectedBossesArray[i].meso;
         }
     } else {
-        // Sum up all selected bosses
         selectedBosses.forEach((difficultyObj) => {
             total += parseInt(difficultyObj.meso);
         });
     }
-    
-    // Apply heroic mode multiplier if active
     if (heroicModeActive) {
         total *= 5;
     }
-    
-    // Update the total display
     const totalElement = document.getElementById('totalMeso');
     if (totalElement) {
         totalElement.textContent = formatNumber(total);
     }
-    
-    // Update the crystal counter
     updateCrystalCounter();
-    // Save state after updating
     saveSelectionsToStorage();
 }
 
@@ -195,7 +173,7 @@ function restoreSelectionsFromStorage() {
 async function loadBossCrystalData() {
     try {
         // Load the boss crystal data
-        allBossData = await loadCSV('bosscrystal_weekly.csv');
+        allBossData = await loadCSV(config.csv);
         
         // Get the table body
         const tbody = prepareTable('bossTable');
@@ -258,32 +236,22 @@ async function loadBossCrystalData() {
 }
 
 // Initialize the page when DOM content is loaded
-function initializePage() {
+function initializePage(userConfig) {
+    config = { ...DEFAULT_CONFIG, ...userConfig };
     loadBossCrystalData().then(() => {
-        // Restore selections after table is built
         restoreSelectionsFromStorage();
     });
-    
-    // Reset button event listener
     const resetButton = document.getElementById('resetSelections');
     if (resetButton) {
         resetButton.addEventListener('click', () => {
-            // Uncheck all boss checkboxes
             document.querySelectorAll('input[data-boss]').forEach(checkbox => {
                 checkbox.checked = false;
             });
-            
-            // Clear selected bosses
             selectedBosses.clear();
-            
-            // Clear crossed-out rows
             document.querySelectorAll('tr.crossed-out').forEach(row => {
                 row.classList.remove('crossed-out');
             });
-            
-            // Update total and counter
             updateTotalMeso();
-            // Save reset state
             saveSelectionsToStorage();
         });
     }

@@ -1,7 +1,13 @@
 // Common UI elements and functionality
 export const navbar = `
   <div id="navbar">    
-    <button id="bosscrystalBtn" onclick="window.location.href='bosscrystal_weekly.html'">Weekly Boss Crystal</button>
+    <div class="dropdown">
+      <button id="bosscrystalDropdownBtn">Boss Crystal ▼</button>
+      <div class="dropdown-content">
+        <a href="bosscrystal_daily.html">Daily</a>
+        <a href="bosscrystal_weekly.html">Weekly</a>
+      </div>
+    </div>
     <button id="darkModeToggle">🌙 Dark Mode</button>
   </div>
 `;
