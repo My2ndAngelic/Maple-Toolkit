@@ -8,6 +8,7 @@ export const navbar = `
         <a href="bosscrystal_weekly.html">Weekly</a>
       </div>
     </div>
+    <button onclick="window.location.href='challenger.html'">Challenger World</button>
     <button id="darkModeToggle">🌙 Dark Mode</button>
   </div>
 `;

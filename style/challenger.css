@@ -1,0 +1,315 @@
+/* Calculator sections */
+.calculator-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.calculator-section h2 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #007acc;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Input groups */
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.input-group input[type="number"] {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100px;
+}
+
+.help-text {
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* Checkbox groups */
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.checkbox-group h3 {
+    grid-column: 1 / -1;
+    margin: 1rem 0 0.5rem;
+    color: #007acc;
+    font-size: 1.1rem;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+/* Total section */
+.total-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #007acc;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.total-section h2 {
+    margin: 0;
+}
+
+.rank-indicator {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+}
+
+/* Progress bar */
+.progress-bar {
+    margin: 1rem auto;
+    height: 20px;
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+}
+
+#progressFill {
+    height: 100%;
+    background-color: #4CAF50;
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+.rank-progress {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Date input mode styles */
+.input-mode-selector {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.mode-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.mode-button.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+.date-inputs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.date-inputs > div {
+    flex: 1;
+}
+
+.date-inputs label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.date-inputs input[type="date"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Dark mode styles */
+html[data-theme="dark"] .calculator-section,
+body.dark-mode .calculator-section {
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+html[data-theme="dark"] .calculator-section h2,
+body.dark-mode .calculator-section h2 {
+    color: #fff;
+    border-bottom-color: #3399ff;
+}
+
+html[data-theme="dark"] .checkbox-group h3,
+body.dark-mode .checkbox-group h3 {
+    color: #3399ff;
+}
+
+html[data-theme="dark"] .help-text,
+body.dark-mode .help-text {
+    color: #aaa;
+}
+
+html[data-theme="dark"] .input-group input[type="number"],
+body.dark-mode .input-group input[type="number"] {
+    background-color: #333;
+    border-color: #444;
+    color: #fff;
+}
+
+html[data-theme="dark"] .total-section,
+body.dark-mode .total-section {
+    background-color: #1a1a1a;
+}
+
+/* Ranks list styles */
+.ranks-list {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--background-color);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    min-width: 200px;
+}
+
+.rank-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.rank-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.rank-item:last-child {
+    border-bottom: none;
+}
+
+.rank-item.current-rank {
+    background-color: var(--highlight-color, #007bff);
+    color: white;
+    border-radius: 4px;
+}
+
+.rank-name {
+    font-weight: bold;
+}
+
+.rank-points {
+    color: var(--text-secondary-color);
+}
+
+.rank-item.current-rank .rank-points {
+    color: white;
+}
+
+/* Two column layout for larger screens */
+.two-column-layout {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.two-column-layout h1 {
+    grid-column: 1 / -1;
+}
+
+.left-column {
+    min-width: 0;
+}
+
+.right-column {
+    position: sticky;
+    top: 1rem;
+    height: calc(100vh - 2rem);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Points summary box */
+.points-summary {
+    background: var(--background-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.ranks-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.total-section {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+    margin-top: auto;
+    background: var(--background-color);
+}
+
+/* Boss category styles */
+.boss-category {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--background-secondary);
+    border-radius: 8px;
+}
+
+.boss-category h3 {
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.boss-category .checkbox-item {
+    margin-left: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .two-column-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .right-column {
+        position: static;
+    }
+}
