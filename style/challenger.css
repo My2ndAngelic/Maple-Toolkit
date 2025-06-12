@@ -186,16 +186,10 @@ body.dark-mode .total-section {
 
 /* Ranks list styles */
 .ranks-list {
-    position: fixed;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--background-color);
+    flex-grow: 1;
+    overflow-y: auto;
     padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--border-color);
-    min-width: 200px;
+    margin-bottom: 1rem;
 }
 
 .rank-items {
@@ -272,17 +266,31 @@ body.dark-mode .total-section {
 }
 
 .ranks-list {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding-right: 0.5rem;
+    padding: 1rem;
+}
+
+.rank-items {
     margin-bottom: 1rem;
 }
 
+.rank-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1.1em;
+}
+
+.rank-item.current-rank {
+    background-color: var(--highlight-color, #007bff);
+    color: white;
+    border-radius: 4px;
+}
+
 .total-section {
-    border-top: 1px solid var(--border-color);
+    border-top: 2px solid var(--border-color);
+    margin-top: 1rem;
     padding-top: 1rem;
-    margin-top: auto;
-    background: var(--background-color);
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 /* Boss category styles */

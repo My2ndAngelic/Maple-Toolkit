@@ -66,23 +66,26 @@ function handleBossCheckboxChange(checkbox) {
     }
 }
 
-function createRanksList() {
-    const ranksList = document.createElement('div');
-    ranksList.className = 'ranks-list';
+function updateRanksList() {
+    const rankItems = document.querySelector('.rank-items');
+    rankItems.innerHTML = '';
     
+    const currentRank = getRank(calculateTotalPoints());
     const ranksEntries = Object.entries(RANKS);
+    
     for (let i = ranksEntries.length - 1; i >= 0; i--) {
         const [rank, points] = ranksEntries[i];
         const rankItem = document.createElement('div');
         rankItem.className = 'rank-item';
+        if (rank === currentRank) {
+            rankItem.classList.add('current-rank');
+        }
         rankItem.innerHTML = `
             <span class="rank-name">${rank}</span>
             <span class="rank-points">${points.toLocaleString()} points</span>
         `;
-        ranksList.appendChild(rankItem);
+        rankItems.appendChild(rankItem);
     }
-    
-    return ranksList;
 }
 
 function calculateWeeksBetweenDates(startDate, endDate) {
@@ -135,12 +138,6 @@ function getRank(points) {
     return currentRank;
 }
 
-function getNextRank(currentRank) {
-    const ranks = Object.keys(RANKS);
-    const currentIndex = ranks.indexOf(currentRank);
-    return currentIndex < ranks.length - 1 ? ranks[currentIndex + 1] : currentRank;
-}
-
 function handleLevelCheckboxChange(checkbox) {
     const checkboxId = checkbox.id;
     const currentIndex = LEVEL_THRESHOLDS.findIndex(level => level.id === checkboxId);
@@ -168,41 +165,12 @@ function handleLevelCheckboxChange(checkbox) {
 
 function updateDisplay() {
     const totalPoints = calculateTotalPoints();
-    const currentRank = getRank(totalPoints);
-    const nextRank = getNextRank(currentRank);
     
     // Update total points display
     document.getElementById('totalPoints').textContent = totalPoints.toLocaleString();
     
-    // Update rank display
-    document.getElementById('currentRank').textContent = currentRank;
-    
-    // Update progress display
-    const currentThreshold = RANKS[currentRank];
-    const nextThreshold = RANKS[nextRank];
-    
-    if (currentRank === 'Challenger') {
-        document.getElementById('rankProgress').textContent = 'Maximum Rank Achieved!';
-        document.getElementById('progressFill').style.width = '100%';
-    } else {
-        const progress = totalPoints - currentThreshold;
-        const total = nextThreshold - currentThreshold;
-        const percentage = (progress / total) * 100;
-        
-        document.getElementById('rankProgress').textContent = 
-            `${progress.toLocaleString()}/${total.toLocaleString()}`;
-        document.getElementById('progressFill').style.width = `${percentage}%`;
-    }
-    
-    // Update ranks list highlighting
-    document.querySelectorAll('.rank-item').forEach(item => {
-        const rankName = item.querySelector('.rank-name').textContent;
-        if (rankName === currentRank) {
-            item.classList.add('current-rank');
-        } else {
-            item.classList.remove('current-rank');
-        }
-    });
+    // Update ranks list
+    updateRanksList();
 }
 
 function handleDateChange() {
@@ -234,10 +202,11 @@ function switchMode(mode) {
 }
 
 export function initializeChallenger() {
-    // Add ranks list to the page
-    const calculatorSection = document.querySelector('.calculator-section');
-    const ranksList = createRanksList();
-    calculatorSection.parentElement.insertBefore(ranksList, calculatorSection);
+    // Initialize ranks list
+    updateRanksList();
+    
+    // Set default week count
+    document.getElementById('weekCount').value = 15;
     
     // Initialize input mode buttons
     document.getElementById('weekModeBtn').addEventListener('click', () => switchMode('week'));

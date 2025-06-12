@@ -30,7 +30,7 @@
                 </div>
                 <div id="weekInputGroup" class="input-group">
                     <label for="weekCount">Number of Weeks:</label>
-                    <input type="number" id="weekCount" min="0" value="0">
+                    <input type="number" id="weekCount" min="0" value="15">
                     <p class="help-text">You can receive 100 Challenger Points per check-in, maximum 5 check-ins per week.</p>
                 </div>
                 <div id="dateInputGroup" class="input-group" style="display: none;">
@@ -284,18 +284,8 @@
                     <div class="rank-items">
                         <!-- Ranks will be populated by JavaScript -->
                     </div>
-                </div>
-                
-                <div class="total-section">
-                    <h2>Total Points: <span id="totalPoints">0</span></h2>
-                    <div class="rank-indicator">
-                        Current Rank: <span id="currentRank">None</span>
-                        <div class="progress-bar">
-                            <div id="progressFill"></div>
-                        </div>
-                        <div class="rank-progress">
-                            Progress to next rank: <span id="rankProgress">0/5000</span>
-                        </div>
+                    <div class="total-section">
+                        Total Points: <span id="totalPoints">0</span>
                     </div>
                 </div>
             </div>
