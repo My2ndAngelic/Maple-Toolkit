@@ -163,6 +163,41 @@ function handleLevelCheckboxChange(checkbox) {
     }
 }
 
+function saveToLocalStorage() {
+    const state = {
+        mode: document.getElementById('weekInputGroup').style.display !== 'none' ? 'week' : 'date',
+        weekCount: document.getElementById('weekCount').value,
+        startDate: document.getElementById('startDate').value,
+        endDate: document.getElementById('endDate').value,
+        checkedBoxes: Array.from(document.querySelectorAll('.checkbox-group input[type="checkbox"]'))
+            .filter(cb => cb.checked)
+            .map(cb => cb.id)
+    };
+    localStorage.setItem('challengerState', JSON.stringify(state));
+}
+
+function loadFromLocalStorage() {
+    const savedState = localStorage.getItem('challengerState');
+    if (!savedState) return;
+
+    const state = JSON.parse(savedState);
+    
+    // Restore mode
+    switchMode(state.mode);
+    
+    // Restore week count
+    document.getElementById('weekCount').value = state.weekCount;
+    
+    // Restore dates
+    document.getElementById('startDate').value = state.startDate;
+    document.getElementById('endDate').value = state.endDate;
+    
+    // Restore checkboxes
+    document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = state.checkedBoxes.includes(checkbox.id);
+    });
+}
+
 function updateDisplay() {
     const totalPoints = calculateTotalPoints();
     
@@ -171,6 +206,9 @@ function updateDisplay() {
     
     // Update ranks list
     updateRanksList();
+    
+    // Save current state
+    saveToLocalStorage();
 }
 
 function handleDateChange() {
@@ -205,8 +243,10 @@ export function initializeChallenger() {
     // Initialize ranks list
     updateRanksList();
     
-    // Set default week count
-    document.getElementById('weekCount').value = 15;
+    // Set default week count if no saved state
+    if (!localStorage.getItem('challengerState')) {
+        document.getElementById('weekCount').value = 15;
+    }
     
     // Initialize input mode buttons
     document.getElementById('weekModeBtn').addEventListener('click', () => switchMode('week'));
@@ -237,6 +277,15 @@ export function initializeChallenger() {
     // Set event end date as default end date
     document.getElementById('endDate').value = EVENT_DATES.end;
     
+    // Load saved state or set defaults
+    if (localStorage.getItem('challengerState')) {
+        loadFromLocalStorage();
+    } else {
+        // Set default dates if no saved state
+        document.getElementById('startDate').value = EVENT_DATES.start;
+        document.getElementById('endDate').value = EVENT_DATES.end;
+    }
+
     // Initial update
     handleDateChange();
     updateDisplay();
