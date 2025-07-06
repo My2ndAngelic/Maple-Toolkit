@@ -37,6 +37,38 @@
     font-weight: bold;
     display: flex;
     align-items: center;
+    gap: 2px;
+}
+
+.crystal-counter select {
+    padding: 2px 6px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: white;
+    font-size: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 2px;
+}
+
+.crystal-counter select:focus {
+    outline: none;
+    border-color: #007acc;
+    box-shadow: 0 0 3px rgba(0, 122, 204, 0.3);
+}
+
+/* Dark mode styles for inline crystal limit selector */
+html[data-theme="dark"] .crystal-counter select,
+body.dark-mode .crystal-counter select {
+    background-color: #333;
+    border-color: #555;
+    color: white;
+}
+
+html[data-theme="dark"] .crystal-counter select:focus,
+body.dark-mode .crystal-counter select:focus {
+    border-color: #3399ff;
+    box-shadow: 0 0 3px rgba(51, 153, 255, 0.3);
 }
 
 #crystalCount {
@@ -141,4 +173,31 @@ body.dark-mode tr.crossed-out::after {
     display: inline-block;
     min-width: 80px;
     text-align: right;
+}
+
+/* Responsive design for controls container */
+@media (max-width: 768px) {
+    .controls-container {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .heroic-mode-container,
+    .crystal-counter,
+    .total-container {
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .controls-container {
+        padding: 10px;
+    }
+    
+    .crystal-counter select {
+        font-size: 13px;
+        padding: 1px 4px;
+    }
 }

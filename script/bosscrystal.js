@@ -27,12 +27,15 @@ function updateCrystalCounter() {
     const crystalCountElement = document.getElementById('crystalCount');
     const crystalCounterContainer = document.querySelector('.crystal-counter');
     const count = selectedBosses.size;
+    
     if (crystalCountElement) {
         crystalCountElement.textContent = count;
-        if (config.limit && crystalCounterContainer) {
-            crystalCounterContainer.classList.toggle('limit-reached', count > config.limit);
-        }
     }
+    
+    if (config.limit && crystalCounterContainer) {
+        crystalCounterContainer.classList.toggle('limit-reached', count > config.limit);
+    }
+    
     if (config.limit && count > config.limit) {
         markLowestCrystals(count - config.limit);
     } else {
@@ -142,6 +145,14 @@ function toggleHeroicMode(checkbox) {
     saveSelectionsToStorage();
 }
 
+// Handle crystal limit change
+function handleCrystalLimitChange(selectElement) {
+    config.limit = parseInt(selectElement.value);
+    updateCrystalCounter();
+    updateTotalMeso();
+    saveSelectionsToStorage();
+}
+
 // Save current selections and heroic mode to localStorage
 function saveSelectionsToStorage() {
     const selections = Array.from(selectedBosses.entries()).map(([boss, data]) => ({
@@ -149,14 +160,17 @@ function saveSelectionsToStorage() {
         difficulty: data.difficulty,
         meso: data.meso
     }));
-    localStorage.setItem('bossCrystalSelections', JSON.stringify(selections));
-    localStorage.setItem('heroicModeActive', JSON.stringify(heroicModeActive));
+    localStorage.setItem(`bossCrystalSelections_${config.mode}`, JSON.stringify(selections));
+    localStorage.setItem(`heroicModeActive_${config.mode}`, JSON.stringify(heroicModeActive));
+    localStorage.setItem(`crystalLimit_${config.mode}`, JSON.stringify(config.limit));
 }
 
 // Restore selections and heroic mode from localStorage
 function restoreSelectionsFromStorage() {
-    const selections = JSON.parse(localStorage.getItem('bossCrystalSelections') || '[]');
-    const heroic = JSON.parse(localStorage.getItem('heroicModeActive') || 'false');
+    const selections = JSON.parse(localStorage.getItem(`bossCrystalSelections_${config.mode}`) || '[]');
+    const heroic = JSON.parse(localStorage.getItem(`heroicModeActive_${config.mode}`) || 'false');
+    const crystalLimit = JSON.parse(localStorage.getItem(`crystalLimit_${config.mode}`) || config.limit.toString());
+    
     selectedBosses.clear();
     selections.forEach(sel => {
         selectedBosses.set(sel.boss, { difficulty: sel.difficulty, meso: sel.meso });
@@ -164,9 +178,16 @@ function restoreSelectionsFromStorage() {
         const checkbox = document.querySelector(`input[data-boss="${sel.boss}"][data-difficulty="${sel.difficulty}"]`);
         if (checkbox) checkbox.checked = true;
     });
+    
     heroicModeActive = heroic;
     const heroicCheckbox = document.getElementById('heroicMode');
     if (heroicCheckbox) heroicCheckbox.checked = heroicModeActive;
+    
+    // Restore crystal limit
+    config.limit = crystalLimit;
+    const crystalLimitSelect = document.getElementById('crystalLimit');
+    if (crystalLimitSelect) crystalLimitSelect.value = crystalLimit;
+    
     updateTotalMeso();
 }
 
@@ -225,6 +246,14 @@ async function loadBossCrystalData() {
         if (heroicCheckbox) {
             heroicCheckbox.addEventListener('change', (e) => {
                 toggleHeroicMode(e.target);
+            });
+        }
+        
+        // Create crystal limit selector
+        const crystalLimitSelect = document.getElementById('crystalLimit');
+        if (crystalLimitSelect) {
+            crystalLimitSelect.addEventListener('change', (e) => {
+                handleCrystalLimitChange(e.target);
             });
         }
         
