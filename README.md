@@ -1,3 +1,3 @@
-# Maple-Progression-Tracker
+# Maple-Toolkit
 
-Track your MS progression and display on a webpage
+A calculator for your MapleStory needs
