@@ -4,7 +4,6 @@
  * Load navbar.html and insert into the page
  * Only inserts if navbar doesn't already exist
  */
-import * as navbarHTML from "../html/navbar.html"
 
 export async function initializeNavbar() {
     if (!document.getElementById('navbar')) {
