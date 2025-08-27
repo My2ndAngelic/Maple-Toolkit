@@ -24,6 +24,16 @@ const EVENT_DATES = {
     end: '2025-09-24'
 };
 
+// Unified double points configuration
+let doublePoints = {
+    enabled: false,
+    // Week mode config
+    doubleWeeks: 4,
+    // Date mode config  
+    start: '',
+    end: ''
+};
+
 // Boss hierarchies - from highest to lowest difficulty
 const BOSS_HIERARCHIES = {
     'Lucid': ['hardLucid', 'normalLucid', 'easyLucid'],
@@ -100,21 +110,79 @@ function calculateWeeksBetweenDates(startDate, endDate) {
     return Math.ceil(diffDays / 7);
 }
 
-function calculateHuntingPoints(weeks) {
-    return weeks * 5 * 100; // 5 check-ins per week, 100 points each
+function calculateHuntingPoints(weeks, startDate = null, endDate = null) {
+    // Week Mode
+    if (!startDate && !endDate) {
+        if (doublePoints.enabled && doublePoints.doubleWeeks > 0) {
+            const totalWeeks = weeks;
+            const doubleWeeks = Math.min(doublePoints.doubleWeeks, totalWeeks);
+            const regularWeeks = totalWeeks - doubleWeeks;
+            
+            return (regularWeeks * 5 * 100) + (doubleWeeks * 5 * 200);
+        } else {
+            // Simple calculation - no 2x periods
+            return weeks * 5 * 100;
+        }
+    }
+    
+    // Date Mode - use date-based calculation
+    if (doublePoints.enabled && doublePoints.start && doublePoints.end) {
+        return calculateHuntingPointsWithDates(new Date(startDate), new Date(endDate));
+    }
+    
+    // Date mode without double points
+    const calculatedWeeks = calculateWeeksBetweenDates(startDate, endDate);
+    return calculatedWeeks * 5 * 100;
+}
+
+function calculateHuntingPointsWithDates(start, end) {
+    let totalPoints = 0;
+    
+    // If no valid date range, return 0
+    if (start >= end) return 0;
+    
+    // Calculate week by week
+    let currentDate = new Date(start);
+    while (currentDate < end) {
+        const weekEnd = new Date(currentDate);
+        weekEnd.setDate(weekEnd.getDate() + 6); // Add 6 days to get end of week
+        
+        // Don't go beyond the event end date
+        if (weekEnd > end) {
+            weekEnd.setTime(end.getTime());
+        }
+        
+        // Check if this week overlaps with the double points period
+        let isDoubleWeek = false;
+        if (doublePoints.enabled && doublePoints.start && doublePoints.end) {
+            const periodStart = new Date(doublePoints.start);
+            const periodEnd = new Date(doublePoints.end);
+            // Week overlaps if current week start is before period end and week end is after period start
+            isDoubleWeek = currentDate <= periodEnd && weekEnd >= periodStart;
+        }
+        
+        // Add points for this week (still max 5 check-ins per week)
+        const pointsPerCheckin = isDoubleWeek ? 200 : 100;
+        totalPoints += 5 * pointsPerCheckin;
+        
+        // Move to next week
+        currentDate.setDate(currentDate.getDate() + 7);
+    }
+    
+    return totalPoints;
 }
 
 function calculateTotalPoints() {
     // Get hunting points based on active input mode
-    let weeks;
+    let total = 0;
     if (document.getElementById('weekInputGroup').style.display !== 'none') {
-        weeks = parseInt(document.getElementById('weekCount').value) || 0;
+        const weeks = parseInt(document.getElementById('weekCount').value) || 0;
+        total = calculateHuntingPoints(weeks);
     } else {
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
-        weeks = calculateWeeksBetweenDates(startDate, endDate);
+        total = calculateHuntingPoints(null, startDate, endDate);
     }
-    let total = calculateHuntingPoints(weeks);
     
     // Add level mission points
     document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(checkbox => {
@@ -171,7 +239,8 @@ function saveToLocalStorage() {
         endDate: document.getElementById('endDate').value,
         checkedBoxes: Array.from(document.querySelectorAll('.checkbox-group input[type="checkbox"]'))
             .filter(cb => cb.checked)
-            .map(cb => cb.id)
+            .map(cb => cb.id),
+        doublePoints: doublePoints
     };
     localStorage.setItem('challengerState', JSON.stringify(state));
 }
@@ -196,6 +265,157 @@ function loadFromLocalStorage() {
     document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(checkbox => {
         checkbox.checked = state.checkedBoxes.includes(checkbox.id);
     });
+    
+    // Restore unified double points configuration
+    if (state.doublePoints) {
+        doublePoints = state.doublePoints;
+    } else {
+        // Migrate from old format if needed
+        if (state.doublePointsPeriod) {
+            doublePoints.enabled = state.doublePointsPeriod.enabled;
+            doublePoints.start = state.doublePointsPeriod.start;
+            doublePoints.end = state.doublePointsPeriod.end;
+        }
+        if (state.weekModeDouble) {
+            doublePoints.enabled = doublePoints.enabled || state.weekModeDouble.enabled;
+            doublePoints.doubleWeeks = state.weekModeDouble.doubleWeeks;
+        }
+    }
+    
+    updateDoublePointsUI();
+}
+
+function toggleDoublePoints() {
+    const isWeekMode = document.getElementById('weekInputGroup').style.display !== 'none';
+    
+    if (isWeekMode) {
+        doublePoints.enabled = document.getElementById('enableDoublePoints').checked;
+        const configDiv = document.getElementById('doublePointsConfig');
+        
+        if (doublePoints.enabled) {
+            configDiv.style.display = 'block';
+        } else {
+            configDiv.style.display = 'none';
+            doublePoints.doubleWeeks = 0;
+        }
+    } else {
+        doublePoints.enabled = document.getElementById('enableDoublePointsDate').checked;
+        const configDiv = document.getElementById('doublePointsDateConfig');
+        
+        if (doublePoints.enabled) {
+            configDiv.style.display = 'block';
+        } else {
+            configDiv.style.display = 'none';
+            doublePoints.start = '';
+            doublePoints.end = '';
+            document.getElementById('doubleStartDate').value = '';
+            document.getElementById('doubleEndDate').value = '';
+        }
+    }
+    
+    updateDoublePointsInfo();
+    updateDisplay();
+}
+
+function updateDoublePointsDate(field, value) {
+    doublePoints[field] = value;
+    updateDoublePointsInfo();
+    updateDisplay();
+}
+
+function updateDoublePointsWeeks() {
+    const doubleWeekCount = parseInt(document.getElementById('doubleWeekCount').value) || 0;
+    doublePoints.doubleWeeks = doubleWeekCount;
+    updateWeekModeDoublePeriodInfo();
+    updateDisplay();
+}
+
+function updateDoublePointsUI() {
+    const isWeekMode = document.getElementById('weekInputGroup').style.display !== 'none';
+    
+    if (isWeekMode) {
+        // Week Mode UI
+        const enableCheckbox = document.getElementById('enableDoublePoints');
+        const configDiv = document.getElementById('doublePointsConfig');
+        const doubleWeekInput = document.getElementById('doubleWeekCount');
+        
+        if (enableCheckbox) {
+            enableCheckbox.checked = doublePoints.enabled;
+        }
+        
+        if (configDiv) {
+            configDiv.style.display = doublePoints.enabled ? 'block' : 'none';
+        }
+        
+        if (doubleWeekInput) {
+            doubleWeekInput.value = doublePoints.doubleWeeks || 4;
+        }
+        
+        updateWeekModeDoublePeriodInfo();
+    } else {
+        // Date Mode UI
+        const enableCheckbox = document.getElementById('enableDoublePointsDate');
+        const configDiv = document.getElementById('doublePointsDateConfig');
+        const startDateInput = document.getElementById('doubleStartDate');
+        const endDateInput = document.getElementById('doubleEndDate');
+        
+        if (enableCheckbox) {
+            enableCheckbox.checked = doublePoints.enabled;
+        }
+        
+        if (configDiv) {
+            configDiv.style.display = doublePoints.enabled ? 'block' : 'none';
+        }
+        
+        if (startDateInput) {
+            startDateInput.value = doublePoints.start || '';
+        }
+        
+        if (endDateInput) {
+            endDateInput.value = doublePoints.end || '';
+        }
+        
+        updateDoublePointsInfo();
+    }
+}
+
+function updateDoublePointsInfo() {
+    const infoDiv = document.getElementById('doublePeriodInfo');
+    if (!infoDiv) return;
+    
+    if (doublePoints.enabled && doublePoints.start && doublePoints.end) {
+        const startDate = new Date(doublePoints.start);
+        const endDate = new Date(doublePoints.end);
+        const weeks = calculateWeeksBetweenDates(doublePoints.start, doublePoints.end);
+        
+        infoDiv.textContent = `2x period: ${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()} (${weeks} week${weeks !== 1 ? 's' : ''})`;
+        infoDiv.style.display = 'block';
+    } else if (doublePoints.enabled) {
+        infoDiv.textContent = 'Please set both start and end dates for the 2x period';
+        infoDiv.style.display = 'block';
+    } else {
+        infoDiv.style.display = 'none';
+    }
+}
+
+function updateWeekModeDoublePeriodInfo() {
+    const infoDiv = document.getElementById('weekModeDoublePeriodInfo');
+    if (!infoDiv) return;
+    
+    if (doublePoints.enabled && doublePoints.doubleWeeks > 0) {
+        const totalWeeks = parseInt(document.getElementById('weekCount').value) || 0;
+        const doubleWeeks = Math.min(doublePoints.doubleWeeks, totalWeeks);
+        const regularWeeks = Math.max(0, totalWeeks - doubleWeeks);
+        
+        const regularPoints = regularWeeks * 500;
+        const doublePoints_calc = doubleWeeks * 1000;
+        const totalPoints = regularPoints + doublePoints_calc;
+        
+        infoDiv.textContent = `${regularWeeks} regular weeks (${regularPoints.toLocaleString()}) + ${doubleWeeks} double weeks (${doublePoints_calc.toLocaleString()}) = ${totalPoints.toLocaleString()} hunting points`;
+        infoDiv.style.display = 'block';
+    } else {
+        infoDiv.style.display = 'none';
+    }
 }
 
 function updateDisplay() {
@@ -207,15 +427,72 @@ function updateDisplay() {
     // Update ranks list
     updateRanksList();
     
+    // Update double points info
+    updateWeekModeDoubleInfo();
+    updateWeekModeDoublePeriodInfo();
+    
     // Save current state
     saveToLocalStorage();
+}
+
+function updateWeekModeDoubleInfo() {
+    const weekModeInfo = document.getElementById('weekModeDoubleInfo');
+    if (!weekModeInfo) return;
+    
+    if (doublePoints.enabled && doublePoints.doubleWeeks > 0) {
+        weekModeInfo.style.display = 'block';
+        weekModeInfo.textContent = `2x period enabled: ${doublePoints.doubleWeeks} double weeks configured`;
+    } else {
+        weekModeInfo.style.display = 'none';
+    }
 }
 
 function handleDateChange() {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
     const weeks = calculateWeeksBetweenDates(startDate, endDate);
-    document.getElementById('weekCalculation').textContent = `Duration: ${weeks} week${weeks !== 1 ? 's' : ''}`;
+    
+    // Calculate regular and double weeks
+    let regularWeeks = weeks;
+    let doubleWeeks = 0;
+    
+    if (startDate && endDate && doublePoints.enabled && doublePoints.start && doublePoints.end) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        regularWeeks = 0;
+        doubleWeeks = 0;
+        
+        // Calculate week by week
+        let currentDate = new Date(start);
+        while (currentDate < end) {
+            const weekEnd = new Date(currentDate);
+            weekEnd.setDate(weekEnd.getDate() + 6);
+            
+            if (weekEnd > end) {
+                weekEnd.setTime(end.getTime());
+            }
+            
+            // Check if this week overlaps with the double points period
+            const periodStart = new Date(doublePoints.start);
+            const periodEnd = new Date(doublePoints.end);
+            const isDoubleWeek = currentDate <= periodEnd && weekEnd >= periodStart;
+            
+            if (isDoubleWeek) {
+                doubleWeeks++;
+            } else {
+                regularWeeks++;
+            }
+            
+            currentDate.setDate(currentDate.getDate() + 7);
+        }
+    }
+    
+    let calculationText = `Duration: ${weeks} week${weeks !== 1 ? 's' : ''}`;
+    if (doubleWeeks > 0) {
+        calculationText += ` (${regularWeeks} regular + ${doubleWeeks} double points)`;
+    }
+    
+    document.getElementById('weekCalculation').textContent = calculationText;
     updateDisplay();
 }
 
@@ -236,6 +513,9 @@ function switchMode(mode) {
         weekBtn.classList.remove('selected');
         dateBtn.classList.add('selected');
     }
+    
+    // Update the 2x period UI for the current mode
+    updateDoublePointsUI();
     updateDisplay();
 }
 
@@ -257,7 +537,36 @@ export function initializeChallenger() {
     document.getElementById('endDate').addEventListener('change', handleDateChange);
     
     // Add event listener to week count
-    document.getElementById('weekCount').addEventListener('input', updateDisplay);
+    document.getElementById('weekCount').addEventListener('input', () => {
+        updateWeekModeDoublePeriodInfo();
+        updateDisplay();
+    });
+    
+    // Add event listeners for unified double points
+    const enableCheckbox = document.getElementById('enableDoublePoints');
+    if (enableCheckbox) {
+        enableCheckbox.addEventListener('change', toggleDoublePoints);
+    }
+    
+    const enableDateCheckbox = document.getElementById('enableDoublePointsDate');
+    if (enableDateCheckbox) {
+        enableDateCheckbox.addEventListener('change', toggleDoublePoints);
+    }
+    
+    const startDateInput = document.getElementById('doubleStartDate');
+    if (startDateInput) {
+        startDateInput.addEventListener('change', (e) => updateDoublePointsDate('start', e.target.value));
+    }
+    
+    const endDateInput = document.getElementById('doubleEndDate');
+    if (endDateInput) {
+        endDateInput.addEventListener('change', (e) => updateDoublePointsDate('end', e.target.value));
+    }
+    
+    const doubleWeekCountInput = document.getElementById('doubleWeekCount');
+    if (doubleWeekCountInput) {
+        doubleWeekCountInput.addEventListener('input', updateDoublePointsWeeks);
+    }
     
     // Add event listeners to checkboxes
     document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(checkbox => {
@@ -286,6 +595,9 @@ export function initializeChallenger() {
         document.getElementById('endDate').value = EVENT_DATES.end;
     }
 
+    // Initialize double points period display
+    updateDoublePointsUI();
+    
     // Initial update
     handleDateChange();
     updateDisplay();

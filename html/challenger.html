@@ -31,7 +31,24 @@
                 <div id="weekInputGroup" class="input-group">
                     <label for="weekCount">Number of Weeks:</label>
                     <input type="number" id="weekCount" min="0" value="15">
-                    <p class="help-text">You can receive 100 Challenger Points per check-in, maximum 5 check-ins per week.</p>
+                    <p class="help-text">You can receive 100 Challenger Points per check-in (200 during 2x periods), maximum 5 check-ins per week.</p>
+                    <div id="weekModeDoubleInfo" class="period-info" style="display: none;"></div>
+                    
+                    <div class="double-points-section">
+                        <div class="double-points-toggle">
+                            <input type="checkbox" id="enableDoublePoints">
+                            <label for="enableDoublePoints">Enable 2x Period</label>
+                        </div>
+                        <div id="doublePointsConfig" class="double-points-config" style="display: none;">
+                            <div class="week-double-inputs">
+                                <div>
+                                    <label for="doubleWeekCount">Number of 2x Weeks:</label>
+                                    <input type="number" id="doubleWeekCount" min="0" max="52" value="4">
+                                </div>
+                            </div>
+                            <div class="period-info" id="weekModeDoublePeriodInfo"></div>
+                        </div>
+                    </div>
                 </div>
                 <div id="dateInputGroup" class="input-group" style="display: none;">
                     <div class="date-inputs">
@@ -45,7 +62,23 @@
                         </div>
                     </div>
                     <p id="weekCalculation" class="help-text">Duration: 0 weeks</p>
-                    <p class="help-text">You can receive 100 Challenger Points per check-in, maximum 5 check-ins per week.</p>
+                    <p class="help-text">You can receive 100 Challenger Points per check-in (200 during 2x periods), maximum 5 check-ins per week.</p>
+                    
+                    <div class="double-points-section">
+                        <div class="double-points-toggle">
+                            <input type="checkbox" id="enableDoublePointsDate">
+                            <label for="enableDoublePointsDate">Enable 2x Period</label>
+                        </div>
+                        <div id="doublePointsDateConfig" class="double-points-config" style="display: none;">
+                            <div class="double-period-item">
+                                <label>Start Date:</label>
+                                <input type="date" id="doubleStartDate">
+                                <label>End Date:</label>
+                                <input type="date" id="doubleEndDate">
+                            </div>
+                            <div class="period-info" id="doublePeriodInfo"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

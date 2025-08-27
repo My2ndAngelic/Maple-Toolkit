@@ -262,7 +262,7 @@ h1 {
     background-color: #005f99;
 }
 
-#navbar #bosscrystalDropdownBtn {
+#navbar .dropdownBtn {
     background-color: #007acc;
     color: white;
     border: none;

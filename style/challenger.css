@@ -321,3 +321,139 @@ body.dark-mode .total-section {
         position: static;
     }
 }
+
+/* Double points period styles */
+.double-points-section {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #e8f4ff;
+    border-radius: 8px;
+    border: 1px solid #007acc;
+}
+
+.double-points-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.double-points-toggle input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.double-points-toggle label {
+    font-weight: bold;
+    color: #007acc;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.double-points-config {
+    margin-top: 1rem;
+}
+
+.double-period-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background-color: white;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.double-period-item label {
+    font-weight: normal;
+    margin: 0;
+    min-width: 80px;
+}
+
+.double-period-item input[type="date"] {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+.period-info {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+/* Dark mode styles for double points section */
+html[data-theme="dark"] .double-points-section,
+body.dark-mode .double-points-section {
+    background-color: #1a2332;
+    border-color: #3399ff;
+}
+
+html[data-theme="dark"] .double-points-toggle label,
+body.dark-mode .double-points-toggle label {
+    color: #3399ff;
+}
+
+html[data-theme="dark"] .double-period-item,
+body.dark-mode .double-period-item {
+    background-color: #2a2a2a;
+    border-color: #444;
+}
+
+html[data-theme="dark"] .double-period-item input[type="date"],
+body.dark-mode .double-period-item input[type="date"] {
+    background-color: #333;
+    border-color: #444;
+    color: #fff;
+}
+
+html[data-theme="dark"] .period-info,
+body.dark-mode .period-info {
+    color: #aaa;
+    background-color: #2a2a2a;
+}
+
+/* Week Mode double points styles - removed, now using unified styles */
+
+.week-double-inputs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.week-double-inputs > div {
+    flex: 1;
+}
+
+.week-double-inputs label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: normal;
+}
+
+.week-double-inputs input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Dark mode styles for week mode double points */
+html[data-theme="dark"] .week-double-points-section,
+body.dark-mode .week-double-points-section {
+    background-color: #1a2332;
+    border-color: #3399ff;
+}
+
+html[data-theme="dark"] .week-double-inputs input[type="number"],
+body.dark-mode .week-double-inputs input[type="number"] {
+    background-color: #333;
+    border-color: #444;
+    color: #fff;
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Challenger Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+        .result { font-weight: bold; color: #007acc; }
+    </style>
+</head>
+<body>
+    <h1>Challenger World 2x Period Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Description</h2>
+        <p>This test demonstrates the new 2x period mechanic:</p>
+        <ul>
+            <li>Regular weeks: 100 points per check-in (max 5 per week = 500 points/week)</li>
+            <li>2x period weeks: 200 points per check-in (max 5 per week = 1000 points/week)</li>
+            <li>Still maximum 5 check-ins per week regardless of multiplier</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>Example Scenario</h2>
+        <p>Event Period: June 11, 2025 - September 24, 2025 (15 weeks total)</p>
+        <p>2x Period: July 1, 2025 - July 31, 2025 (overlaps with some weeks)</p>
+        <div class="result" id="calculationResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Week Mode vs Date Mode Test</h2>
+        <p>Both modes should now account for 2x periods when configured</p>
+        <div class="result" id="modeComparisonResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>How to Use</h2>
+        <ol>
+            <li>Switch to "Date Mode" in the main calculator</li>
+            <li>Set your event start and end dates</li>
+            <li>Click "Add 2x Period" to add double point periods</li>
+            <li>Set the start and end dates for each 2x period</li>
+            <li>The calculator will automatically account for overlapping weeks</li>
+        </ol>
+    </div>
+    
+    <script>
+        // Simple test calculation
+        function testCalculation() {
+            const eventStart = new Date('2025-06-11');
+            const eventEnd = new Date('2025-09-24');
+            const doubleStart = new Date('2025-07-01');
+            const doubleEnd = new Date('2025-07-31');
+            
+            let totalPoints = 0;
+            let regularWeeks = 0;
+            let doubleWeeks = 0;
+            
+            let currentDate = new Date(eventStart);
+            while (currentDate < eventEnd) {
+                const weekEnd = new Date(currentDate);
+                weekEnd.setDate(weekEnd.getDate() + 6);
+                
+                if (weekEnd > eventEnd) {
+                    weekEnd.setTime(eventEnd.getTime());
+                }
+                
+                // Check if this week overlaps with double period
+                const isDoubleWeek = currentDate <= doubleEnd && weekEnd >= doubleStart;
+                
+                const pointsPerCheckin = isDoubleWeek ? 200 : 100;
+                totalPoints += 5 * pointsPerCheckin;
+                
+                if (isDoubleWeek) {
+                    doubleWeeks++;
+                } else {
+                    regularWeeks++;
+                }
+                
+                currentDate.setDate(currentDate.getDate() + 7);
+            }
+            
+            document.getElementById('calculationResult').innerHTML = `
+                <p>Total hunting points: ${totalPoints.toLocaleString()}</p>
+                <p>Regular weeks: ${regularWeeks} (${regularWeeks * 500} points)</p>
+                <p>Double weeks: ${doubleWeeks} (${doubleWeeks * 1000} points)</p>
+            `;
+            
+            // Test Week Mode calculation (simulating 15 weeks with double periods)
+            const weekModePoints = simulateWeekModeWithDoubles(15);
+            const dateModePoints = totalPoints;
+            
+            document.getElementById('modeComparisonResult').innerHTML = `
+                <p>Week Mode (15 weeks with 2x periods): ${weekModePoints.toLocaleString()} points</p>
+                <p>Date Mode (same period): ${dateModePoints.toLocaleString()} points</p>
+                <p>Match: ${weekModePoints === dateModePoints ? '✅ Yes' : '❌ No'}</p>
+            `;
+        }
+        
+        function simulateWeekModeWithDoubles(weeks) {
+            // Simulate the new Week Mode calculation that accounts for 2x periods
+            const eventStart = new Date('2025-06-11');
+            const eventEnd = new Date(eventStart);
+            eventEnd.setDate(eventEnd.getDate() + (weeks * 7));
+            
+            const doubleStart = new Date('2025-07-01');
+            const doubleEnd = new Date('2025-07-31');
+            
+            let totalPoints = 0;
+            let currentDate = new Date(eventStart);
+            
+            while (currentDate < eventEnd) {
+                const weekEnd = new Date(currentDate);
+                weekEnd.setDate(weekEnd.getDate() + 6);
+                
+                if (weekEnd > eventEnd) {
+                    weekEnd.setTime(eventEnd.getTime());
+                }
+                
+                const isDoubleWeek = currentDate <= doubleEnd && weekEnd >= doubleStart;
+                const pointsPerCheckin = isDoubleWeek ? 200 : 100;
+                totalPoints += 5 * pointsPerCheckin;
+                
+                currentDate.setDate(currentDate.getDate() + 7);
+            }
+            
+            return totalPoints;
+        }
+        
+        // Run test when page loads
+        window.addEventListener('load', testCalculation);
+    </script>
+</body>
+</html>

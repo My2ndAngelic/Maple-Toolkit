@@ -1,32 +1,12 @@
 // Common UI elements and functionality
-export const navbar = `
-  <div id="navbar">    
-    <div class="dropdown">
-      <button id="bosscrystalDropdownBtn">Boss Crystal ▼</button>
-      <div class="dropdown-content">
-        <a href="bosscrystal_daily.html">Daily</a>
-        <a href="bosscrystal_weekly.html">Weekly</a>
-      </div>
-    </div>
-    <button onclick="window.location.href='challenger.html'">Challenger World</button>
-    <button id="darkModeToggle">🌙 Dark Mode</button>
-  </div>
-`;
+import { initializeNavbar, setPageTitle } from './navbar.js';
 
 export function initializeUI() {
-    // Only insert navbar if it doesn't already exist
-    if (!document.getElementById('navbar')) {
-        // Insert navbar at the start of the body
-        document.body.insertAdjacentHTML('afterbegin', navbar);
-    }
-
-    // Get the current page name from the HTML filename
-    const pageName = window.location.pathname.split('/').pop().replace('.html', '');
-    // Convert first letter to uppercase and replace dashes with spaces
-    const formattedPageName = pageName.charAt(0).toUpperCase() + pageName.slice(1).replace(/-/g, ' ');
-
-    // Set the page title in the browser tab
-    document.title = `MapleStory Tracker - ${formattedPageName}`;
+    // Initialize navbar
+    initializeNavbar();
+    
+    // Set page title
+    setPageTitle();
 
     // Update any existing H1 title, or add one if it doesn't exist
     // const container = document.getElementById('container');
