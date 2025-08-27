@@ -7,14 +7,19 @@
     <link rel="stylesheet" href="../style/style.css" id="themeStylesheet">
     <link rel="stylesheet" href="../style/challenger.css">
     <script type="module">
-        import { initializeUI } from "../script/ui.js";
-        import { initializeChallenger } from "../script/challenger.js";
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeUI();
-            initializeChallenger();
-        });
-    </script>
+    import { initializeNavbar, setPageTitle } from "../script/navbar.js";
+    import { initializeUI } from "../script/ui.js";
+    import { initializeChallenger } from "../script/challenger.js";
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await initializeNavbar(); // injects navbar.html
+        setPageTitle();           // updates page title
+
+        initializeUI();
+        initializeChallenger();
+    });
+</script>
+
 </head>
 <body>
     <div id="container" class="two-column-layout">
