@@ -7,20 +7,21 @@
     <link rel="stylesheet" href="../style/style.css" id="themeStylesheet">
     <link rel="stylesheet" href="../style/bosscrystal.css">
     <script type="module">
-        import { initializeUI } from "../script/ui.js";
-        import { initializePage } from "../script/bosscrystal.js";
-        
-        // Initialize the page when DOM content is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            // First initialize UI (includes theme)
-            initializeUI();
-            // Then initialize the boss crystal page functionality (weekly mode)
-            initializePage({
-                mode: 'weekly',
-                csv: 'bosscrystal_weekly.csv',
-                limit: 14
-            });
+    import { initializeNavbar, setPageTitle } from "../script/navbar.js";
+    import { initializeUI } from "../script/ui.js";
+    import { initializePage } from "../script/bosscrystal.js";
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await initializeNavbar();  // inject navbar
+        setPageTitle();            // optional: updates title based on filename
+
+        initializeUI();
+        initializePage({
+            mode: 'weekly',
+            csv: 'bosscrystal_weekly.csv',
+            limit: 14
         });
+    });
     </script>
 </head>
 <body>
