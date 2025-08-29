@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Credits - Maple Toolkit</title>
+    <link rel="stylesheet" href="../style/style.css" id="themeStylesheet">
+    <link rel="stylesheet" href="../style/credit.css">
+    <script type="module">
+    import { initializeNavbar, setPageTitle } from "../script/navbar.js";
+    import { initializeUI } from "../script/ui.js";
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await initializeNavbar();  // inject navbar
+        setPageTitle();            // optional: updates title based on filename
+
+        initializeUI();
+    });
+    </script>
+</head>
+<body>
+    <div id="container">
+        <!-- Navbar will be added by navbar.js -->
+        
+        <h1>Credits</h1>
+        
+        <div class="credit-section">
+            <h2>Development</h2>
+            <p>This section can contain information about the developers and contributors.</p>
+        </div>
+
+        <div class="credit-section">
+            <h2>Data Sources</h2>
+            <p>Information about where the data comes from can go here.</p>
+        </div>
+
+        <div class="credit-section">
+            <h2>Special Thanks</h2>
+            <p>Recognition for people who helped with the project.</p>
+        </div>
+
+        <div class="credit-section">
+            <h2>Tools & Libraries</h2>
+            <p>List of tools, libraries, and frameworks used.</p>
+        </div>
+
+        <div class="credit-section">
+            <h2>Community</h2>
+            <p>Thanks to the MapleStory community for feedback and support.</p>
+        </div>
+
+        <div class="credit-section">
+            <h2>Disclaimer</h2>
+            <p>Legal disclaimers and copyright information can be placed here.</p>
+        </div>
+    </div>
+</body>
+</html>

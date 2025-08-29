@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Do Gong's Mystic Bond Calculator</title>
+    <link rel="stylesheet" href="../style/style.css" id="themeStylesheet">
+    <link rel="stylesheet" href="../style/dogong.css">
+    <script type="module">
+    import { initializeNavbar, setPageTitle } from "../script/navbar.js";
+    import { initializeUI } from "../script/ui.js";
+    import { initializeDogong } from "../script/dogong.js";
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await initializeNavbar();  // inject navbar
+        setPageTitle();            // optional: updates title based on filename
+
+        initializeUI();
+        initializeDogong();
+    });
+    </script>
+</head>
+<body>
+    <div id="container">
+        <!-- Navbar will be added by navbar.js -->
+        
+        <h1>Do Gong's Mystic Bond Calculator</h1>
+        
+        <div class="info-section">
+            <h2>How it works</h2>
+            <p>The <strong>Trainer</strong> hunts monsters and the <strong>Inheritor</strong> receives EXP based on their level.</p>
+            <p><strong>Important:</strong> Inheritors must be between levels 200-259. Once they reach level 260, they stop receiving EXP.</p>
+            
+            <div class="exp-rates">
+                <h3>EXP Distribution Rates</h3>
+                <ul>
+                    <li>Level 200-210: <strong>150%</strong></li>
+                    <li>Level 211-220: <strong>300%</strong></li>
+                    <li>Level 221-230: <strong>600%</strong></li>
+                    <li>Level 231-240: <strong>900%</strong></li>
+                    <li>Level 241-250: <strong>1200%</strong></li>
+                    <li>Level 251-259: <strong>1500%</strong></li>
+                </ul>
+                <p class="note">Only base EXP from monsters applies. EXP multiplier effects are not applied.</p>
+            </div>
+            
+            <div class="example-section">
+                <h3>Example</h3>
+                <p>A level 225 inheritor with 50% EXP would receive <strong>6x</strong> the base EXP from monsters hunted by the trainer.</p>
+            </div>
+        </div>
+
+        <!-- Single Calculator Section -->
+        <div class="calculator-section">
+            <h2>Do Gong's Mystic Bond Calculator</h2>
+            
+            <!-- Current Level and EXP % Row -->
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="currentLevel">Current Level:</label>
+                    <input type="number" id="currentLevel" value="200">
+                    <span id="levelValidation" class="validation-message"></span>
+                </div>
+                <div class="input-group">
+                    <label for="currentPercent">Current EXP %:</label>
+                    <input type="number" id="currentPercent" step="0.01" value="0">
+                    <span id="percentValidation" class="validation-message"></span>
+                </div>
+            </div>
+            
+            <!-- Hyper Burning Checkbox -->
+            <div class="input-row">
+                <div class="input-group">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="hyperBurning">
+                        <label for="hyperBurning">Hyper Burning Character (+4 levels per level-up, caps at 260)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mode Selection Row -->
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Mode:</label>
+                    <div class="mode-radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="calculatorMode" value="exp" checked>
+                            EXP Mode
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="calculatorMode" value="monster">
+                            Monster Hunting Mode
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dynamic Input Section -->
+            <div id="dynamicInputs">
+                <!-- EXP Mode Inputs -->
+                <div id="expInputs" class="mode-inputs">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="gainedExp">Gained Base EXP:</label>
+                            <input type="number" id="gainedExp" min="0" value="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Monster Mode Inputs -->
+                <div id="monsterInputs" class="mode-inputs" style="display: none;">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="monsterBaseExp">Monster Base EXP:</label>
+                            <input type="number" id="monsterBaseExp" min="0" value="0">
+                        </div>
+                        <div class="input-group">
+                            <label for="monsterCount">Number of Monsters:</label>
+                            <input type="number" id="monsterCount" min="0" value="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="calculateResult" class="calculate-button">Calculate Result</button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="results-section" style="display: none;">
+            <h2>Results</h2>
+            <div class="results-grid">
+                <div class="result-item">
+                    <label>Starting:</label>
+                    <span id="resultStarting">-</span>
+                </div>
+                <div class="result-item">
+                    <label>Ending:</label>
+                    <span id="resultEnding">-</span>
+                </div>
+                <div class="result-item" id="hyperBurningResult" style="display: none;">
+                    <label>Hyper Burning:</label>
+                    <span>Active (+4 levels per level-up)</span>
+                </div>
+                <div class="result-item">
+                    <label>Total Base EXP Gained:</label>
+                    <span id="resultBaseExp">-</span>
+                </div>
+                <div class="result-item">
+                    <label>Total EXP Received:</label>
+                    <span id="resultTotalExp">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
