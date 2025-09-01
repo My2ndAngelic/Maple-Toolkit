@@ -9,7 +9,7 @@ Von Bon,Chaos,16200000
 Pierre,Chaos,16200000
 Princess No,Normal,16200000
 Magnus,Hard,19012500
-Vellum,Chaos,21012500
+Vellum,Chaos,21012500500
 Papulatus,Chaos,26450000
 Akechi Mitsuhide,Normal,28800000
 Lotus,Normal,32512500
@@ -19,7 +19,7 @@ Damien,Normal,33800000
 Damien,Hard,84375000
 Guardian Angel Slime,Normal,46334700
 Guardian Angel Slime,Chaos,120115625
-Lucid,Easy,47101875
+Lucid,Easy,47401875
 Lucid,Normal,50765625
 Lucid,Hard,100800000
 Will,Easy,49348950
@@ -27,9 +27,9 @@ Will,Normal,55815000
 Will,Hard,124362000
 Gloom,Normal,59535000
 Gloom,Chaos,112789000
-Verus Hilla,Normal,116673000
+Verus Hilla,Normal,116376000
 Verus Hilla,Hard,152421000
-Darknell,Normal,63037500
+Darknell,Normal,63375000
 Darknell,Hard,133584000
 Chosen Seren,Normal,177804375
 Chosen Seren,Hard,219312000
@@ -41,6 +41,6 @@ Kalos the Guardian,Extreme,1040000000
 Kaling,Easy,206250000
 Kaling,Normal,301300000
 Kaling,Hard,598000000
-Kaling,Extreme,1205000000
-Limbo,Normal,2100000000
-Limbo,Hard,3745000000
+Kaling,Extreme,1205200000
+Limbo,Normal,420000000
+Limbo,Hard,749000000

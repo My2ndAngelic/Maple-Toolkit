@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Challenger World: Season 2</title>
+    <link rel="stylesheet" href="../style/style.css" id="themeStylesheet">
+    <link rel="stylesheet" href="../style/challenger.css">
+    <script type="module">
+    import { initializeNavbar, setPageTitle } from "../script/navbar.js";
+    import { initializeUI } from "../script/ui.js";
+    import { initializeChallengerS2 } from "../script/challenger_s2.js";
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await initializeNavbar(); // injects navbar.html
+        setPageTitle();           // updates page title
+
+        initializeUI();
+        initializeChallengerS2();
+    });
+</script>
+
+</head>
+<body>
+    <div id="container" class="two-column-layout">
+        <h1>Challenger World: Season 2</h1>
+        
+        <div class="left-column">
+            <!-- Input Section -->
+            <div class="calculator-section">
+                <h2>Hunting Mission</h2>
+                <div class="input-mode-selector">
+                    <button id="weekModeBtn" class="mode-button selected">Week Mode</button>
+                    <button id="dateModeBtn" class="mode-button">Date Mode</button>
+                </div>
+                <div id="weekInputGroup" class="input-group">
+                    <label for="weekCount">Number of Weeks:</label>
+                    <input type="number" id="weekCount" min="0" value="15">
+                    <p class="help-text">You can receive 100 Challenger Points per check-in (200 during 2x periods), maximum 5 check-ins per week.</p>
+                    <div id="weekModeDoubleInfo" class="period-info" style="display: none;"></div>
+                    
+                    <div class="double-points-section">
+                        <div class="double-points-toggle">
+                            <input type="checkbox" id="enableDoublePoints">
+                            <label for="enableDoublePoints">Enable 2x Period</label>
+                        </div>
+                        <div id="doublePointsConfig" class="double-points-config" style="display: none;">
+                            <div class="week-double-inputs">
+                                <div>
+                                    <label for="doubleWeekCount">Number of 2x Weeks:</label>
+                                    <input type="number" id="doubleWeekCount" min="0" max="52" value="4">
+                                </div>
+                            </div>
+                            <div class="period-info" id="weekModeDoublePeriodInfo"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="dateInputGroup" class="input-group" style="display: none;">
+                    <div class="date-inputs">
+                        <div>
+                            <label for="startDate">Start Date:</label>
+                            <input type="date" id="startDate">
+                        </div>
+                        <div>
+                            <label for="endDate">End Date:</label>
+                            <input type="date" id="endDate">
+                        </div>
+                    </div>
+                    <p id="weekCalculation" class="help-text">Duration: 0 weeks</p>
+                    <p class="help-text">You can receive 100 Challenger Points per check-in (200 during 2x periods), maximum 5 check-ins per week.</p>
+                    
+                    <div class="double-points-section">
+                        <div class="double-points-toggle">
+                            <input type="checkbox" id="enableDoublePointsDate">
+                            <label for="enableDoublePointsDate">Enable 2x Period</label>
+                        </div>
+                        <div id="doublePointsDateConfig" class="double-points-config" style="display: none;">
+                            <div class="double-period-item">
+                                <label>Start Date:</label>
+                                <input type="date" id="doubleStartDate">
+                                <label>End Date:</label>
+                                <input type="date" id="doubleEndDate">
+                            </div>
+                            <div class="period-info" id="doublePeriodInfo"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level Mission Section -->
+            <div class="calculator-section">
+                <h2>Level Mission</h2>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="level260" data-points="3000">
+                        <label for="level260">Level 260 (3,000 points)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="level270" data-points="3000">
+                        <label for="level270">Level 270 (3,000 points)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="level275" data-points="5000">
+                        <label for="level275">Level 275 (5,000 points)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="level280" data-points="7000">
+                        <label for="level280">Level 280 (7,000 points)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="level285" data-points="9000">
+                        <label for="level285">Level 285 (9,000 points)</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Boss Mission Section -->
+            <div class="calculator-section">
+                <h2>Boss Mission</h2>
+                <div class="checkbox-group boss-group">
+                    <!-- 50-100 points bosses -->
+                    <div class="boss-category">
+                        <h3>Cygnus</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalCygnus" data-points="100">
+                            <label for="normalCygnus">Normal (100 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="easyCygnus" data-points="50">
+                            <label for="easyCygnus">Easy (50 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Zakum</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chaosZakum" data-points="100">
+                            <label for="chaosZakum">Chaos (100 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Hilla</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hardHilla" data-points="50">
+                            <label for="hardHilla">Hard (50 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Pink Bean</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chaosPinkBean" data-points="100">
+                            <label for="chaosPinkBean">Chaos (100 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Pierre</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chaosPierre" data-points="100">
+                            <label for="chaosPierre">Chaos (100 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Von Bon</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chaosVonBon" data-points="100">
+                            <label for="chaosVonBon">Chaos (100 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Crimson Queen</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chaosCrimsonQueen" data-points="100">
+                            <label for="chaosCrimsonQueen">Chaos (100 points)</label>
+                        </div>
+                    </div>
+
+                    <!-- 200-250 points bosses -->
+                    <div class="boss-category">
+                        <h3>Magnus</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hardMagnus" data-points="200">
+                            <label for="hardMagnus">Hard (200 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Vellum</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chaosVellum" data-points="200">
+                            <label for="chaosVellum">Chaos (200 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Papulatus</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chaosPapulatus" data-points="250">
+                            <label for="chaosPapulatus">Chaos (250 points)</label>
+                        </div>
+                    </div>
+
+                    <!-- 350-1500 points bosses -->
+                    <div class="boss-category">
+                        <h3>Lotus</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hardLotus" data-points="1500">
+                            <label for="hardLotus">Hard (1,500 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalLotus" data-points="350">
+                            <label for="normalLotus">Normal (350 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Damien</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hardDamien" data-points="1500">
+                            <label for="hardDamien">Hard (1,500 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalDamien" data-points="350">
+                            <label for="normalDamien">Normal (350 points)</label>
+                        </div>
+                    </div>
+
+                    <!-- 500-2500 points bosses -->
+                    <div class="boss-category">
+                        <h3>Guardian Angel Slime</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chaosSlime" data-points="2500">
+                            <label for="chaosSlime">Chaos (2,500 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalSlime" data-points="500">
+                            <label for="normalSlime">Normal (500 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Lucid</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hardLucid" data-points="2000">
+                            <label for="hardLucid">Hard (2,000 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalLucid" data-points="1000">
+                            <label for="normalLucid">Normal (1,000 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="easyLucid" data-points="500">
+                            <label for="easyLucid">Easy (500 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Will</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hardWill" data-points="2500">
+                            <label for="hardWill">Hard (2,500 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalWill" data-points="1000">
+                            <label for="normalWill">Normal (1,000 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="easyWill" data-points="500">
+                            <label for="easyWill">Easy (500 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Gloom</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chaosGloom" data-points="2500">
+                            <label for="chaosGloom">Chaos (2,500 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalGloom" data-points="1000">
+                            <label for="normalGloom">Normal (1,000 points)</label>
+                        </div>
+                    </div>
+
+                    <!-- 2000-3000 points bosses -->
+                    <div class="boss-category">
+                        <h3>Verus Hilla</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hardVerusHilla" data-points="3000">
+                            <label for="hardVerusHilla">Hard (3,000 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalVerusHilla" data-points="2000">
+                            <label for="normalVerusHilla">Normal (2,000 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Darknell</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hardDarknell" data-points="3000">
+                            <label for="hardDarknell">Hard (3,000 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalDarknell" data-points="1000">
+                            <label for="normalDarknell">Normal (1,000 points)</label>
+                        </div>
+                    </div>
+
+                    <!-- High-tier bosses (5000+ points) -->
+                    <div class="boss-category">
+                        <h3>Black Mage</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hardBlackMage" data-points="5000">
+                            <label for="hardBlackMage">Hard (5,000 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Chosen Seren</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hardChosenSeren" data-points="7000">
+                            <label for="hardChosenSeren">Hard (7,000 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalChosenSeren" data-points="5000">
+                            <label for="normalChosenSeren">Normal (5,000 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Kalos the Guardian</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="normalKalosTheGuardian" data-points="9000">
+                            <label for="normalKalosTheGuardian">Normal (9,000 points)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="easyKalosTheGuardian" data-points="7000">
+                            <label for="easyKalosTheGuardian">Easy (7,000 points)</label>
+                        </div>
+                    </div>
+
+                    <div class="boss-category">
+                        <h3>Kaling</h3>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="easyKaling" data-points="9000">
+                            <label for="easyKaling">Easy (9,000 points)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <!-- Points Summary -->
+            <div class="points-summary">
+                <div class="ranks-list">
+                    <div class="rank-items">
+                        <!-- Ranks will be populated by JavaScript -->
+                    </div>
+                    <div class="total-section">
+                        Total Points: <span id="totalPoints">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

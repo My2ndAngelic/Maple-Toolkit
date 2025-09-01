@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title>Do Gong's Mystic Bond Calculator</title>
+    <title>Do Gong's Mystic Bond</title>
     <link rel="stylesheet" href="../style/style.css" id="themeStylesheet">
     <link rel="stylesheet" href="../style/dogong.css">
     <script type="module">
@@ -24,7 +24,7 @@
     <div id="container">
         <!-- Navbar will be added by navbar.js -->
         
-        <h1>Do Gong's Mystic Bond Calculator</h1>
+        <h1>Do Gong's Mystic Bond</h1>
         
         <div class="info-section">
             <h2>How it works</h2>
@@ -47,7 +47,7 @@
 
         <!-- Single Calculator Section -->
         <div class="calculator-section">
-            <h2>Do Gong's Mystic Bond Calculator</h2>
+            <h2>Do Gong's Mystic Bond</h2>
             
             <!-- Current Level and EXP % Row -->
             <div class="input-row">
@@ -79,12 +79,16 @@
                     <label>Mode:</label>
                     <div class="mode-radio-group">
                         <label class="radio-label">
-                            <input type="radio" name="calculatorMode" value="exp" checked>
-                            EXP Mode
+                            <input type="radio" name="calculatorMode" value="target" checked>
+                            Target Level
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="calculatorMode" value="exp">
+                            EXP
                         </label>
                         <label class="radio-label">
                             <input type="radio" name="calculatorMode" value="monster">
-                            Monster Hunting Mode
+                            Monster Hunting
                         </label>
                     </div>
                 </div>
@@ -93,7 +97,7 @@
             <!-- Dynamic Input Section -->
             <div id="dynamicInputs">
                 <!-- EXP Mode Inputs -->
-                <div id="expInputs" class="mode-inputs">
+                <div id="expInputs" class="mode-inputs" style="display: none;">
                     <div class="input-row">
                         <div class="input-group">
                             <label for="gainedExp">Gained Base EXP:</label>
@@ -112,6 +116,29 @@
                         <div class="input-group">
                             <label for="monsterCount">Number of Monsters:</label>
                             <input type="number" id="monsterCount" min="0" value="1">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Target Level Mode Inputs -->
+                <div id="targetInputs" class="mode-inputs">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="targetLevel">Target Level:</label>
+                            <input type="number" id="targetLevel" min="201" max="260" value="220">
+                            <span id="targetLevelValidation" class="validation-message"></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="targetPercent">Target EXP % (optional):</label>
+                            <input type="number" id="targetPercent" step="0.01" min="0" max="99.99" value="0">
+                            <span id="targetPercentValidation" class="validation-message"></span>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="targetMonsterBaseExp">Base Monster EXP (optional):</label>
+                            <input type="number" id="targetMonsterBaseExp" min="0" value="" placeholder="Enter monster base EXP">
+                            <span id="targetMonsterExpValidation" class="validation-message"></span>
                         </div>
                     </div>
                 </div>
@@ -143,6 +170,14 @@
                 <div class="result-item">
                     <label>Total EXP Received:</label>
                     <span id="resultTotalExp">-</span>
+                </div>
+                <div class="result-item" id="targetBaseExpNeeded" style="display: none;">
+                    <label>Base EXP Needed to Reach Target:</label>
+                    <span id="resultBaseExpNeeded">-</span>
+                </div>
+                <div class="result-item" id="targetMonstersNeeded" style="display: none;">
+                    <label>Monsters Needed to Hunt:</label>
+                    <span id="resultMonstersNeeded">-</span>
                 </div>
             </div>
         </div>
