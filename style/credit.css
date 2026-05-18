@@ -1,0 +1,186 @@
+/* Credit page styles */
+
+/* Main heading */
+h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #007acc;
+    font-size: 2.5rem;
+    border-bottom: 3px solid #007acc;
+    padding-bottom: 1rem;
+}
+
+/* Credit sections */
+.credit-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #007acc;
+}
+
+.credit-section h2 {
+    color: #007acc;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
+}
+
+.credit-section p {
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.credit-section p:last-child {
+    margin-bottom: 0;
+}
+
+/* Links styling */
+.credit-section a {
+    color: #007acc;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.credit-section a:hover {
+    text-decoration: underline;
+    color: #005999;
+}
+
+/* Lists styling */
+.credit-section ul,
+.credit-section ol {
+    color: #333;
+    line-height: 1.6;
+    padding-left: 1.5rem;
+}
+
+.credit-section li {
+    margin-bottom: 0.5rem;
+}
+
+/* Code/version styling */
+.credit-section code {
+    background-color: #e9ecef;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+/* Emphasis styling */
+.credit-section strong {
+    color: #007acc;
+    font-weight: 600;
+}
+
+.credit-section em {
+    color: #666;
+    font-style: italic;
+}
+
+/* Blockquote styling */
+.credit-section blockquote {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #e8f4ff;
+    border-left: 4px solid #007acc;
+    font-style: italic;
+    color: #555;
+}
+
+/* Dark mode styles */
+html[data-theme="dark"] h1,
+body.dark-mode h1 {
+    color: #3399ff;
+    border-bottom-color: #3399ff;
+}
+
+html[data-theme="dark"] .credit-section,
+body.dark-mode .credit-section {
+    background-color: #2a2a2a;
+    border-left-color: #3399ff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .credit-section h2,
+body.dark-mode .credit-section h2 {
+    color: #3399ff;
+    border-bottom-color: #444;
+}
+
+html[data-theme="dark"] .credit-section p,
+body.dark-mode .credit-section p {
+    color: #e0e0e0;
+}
+
+html[data-theme="dark"] .credit-section ul,
+body.dark-mode .credit-section ul,
+html[data-theme="dark"] .credit-section ol,
+body.dark-mode .credit-section ol {
+    color: #e0e0e0;
+}
+
+html[data-theme="dark"] .credit-section a,
+body.dark-mode .credit-section a {
+    color: #3399ff;
+}
+
+html[data-theme="dark"] .credit-section a:hover,
+body.dark-mode .credit-section a:hover {
+    color: #66b3ff;
+}
+
+html[data-theme="dark"] .credit-section code,
+body.dark-mode .credit-section code {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+html[data-theme="dark"] .credit-section strong,
+body.dark-mode .credit-section strong {
+    color: #3399ff;
+}
+
+html[data-theme="dark"] .credit-section em,
+body.dark-mode .credit-section em {
+    color: #bbb;
+}
+
+html[data-theme="dark"] .credit-section blockquote,
+body.dark-mode .credit-section blockquote {
+    background-color: #1a2b3d;
+    border-left-color: #3399ff;
+    color: #ccc;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .credit-section {
+        margin: 1.5rem 0;
+        padding: 1rem;
+    }
+    
+    .credit-section h2 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    .credit-section {
+        margin: 1rem 0;
+        padding: 0.75rem;
+    }
+}

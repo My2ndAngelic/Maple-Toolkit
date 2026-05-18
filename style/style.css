@@ -1,0 +1,322 @@
+/* Global light mode styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+#container {
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Navigation bar */
+#navbar {
+    background-color: #f4f4f4;
+    padding: 10px 20px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+#navbar button {
+    background-color: #007acc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#navbar button:hover {
+    background-color: #005f99;
+}
+
+#darkModeToggle {
+    margin-left: auto;
+}
+
+#helpBtn {
+    margin-left: auto;
+}
+
+#aboutBtn {
+    margin-left: 10px;
+}
+
+/* When help, about and dark mode buttons are present, only the first should have auto margin */
+#aboutBtn + #darkModeToggle {
+    margin-left: 10px;
+}
+
+/* Top navigation bar - keeping for backward compatibility */
+#topNavbar {
+    background-color: #f4f4f4;
+    padding: 10px 20px;
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+#topNavbar button {
+    background-color: #007acc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#topNavbar button:hover {
+    background-color: #005f99;
+}
+
+/* Symbol max styling for both arcane and sacred symbols */
+.data-table td.symbol-max {
+    background-color: #4caf50 !important;
+    font-weight: bold !important;
+}
+
+h1 {
+    margin-top: 0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* View buttons */
+#viewButtons {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#viewButtons button {
+    background-color: #007acc;
+    color: white;
+    border: none;
+    margin: 0 5px;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#viewButtons button:hover {
+    background-color: #005f99;
+}
+
+/* Table common styles */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    text-align: left;
+    font-size: 14px;
+    color: #000000;
+}
+
+/* First column should always be bold */
+.data-table td:first-child,
+.data-table th:first-child {
+    font-weight: bold;
+}
+
+/* Header styles */
+.data-table thead th {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+}
+
+/* Alternating row colors */
+.data-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: white;
+}
+
+/* Hidden class for views */
+.hidden {
+    display: none;
+}
+
+/* Dropdown menu styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Add invisible padding area around dropdown to increase hover area */
+.dropdown::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    z-index: -1;
+}
+
+.dropdown #equipmentBtn, .dropdown #symbolsBtn {
+    height: 100%;
+    margin: 0;
+    background-color: #007acc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    z-index: 1;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    /* Add invisible padding around content for larger hover area */
+    padding: 5px 0;
+    /* Add transition for smoother interaction */
+    transition: opacity 0.1s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+    animation: fadeIn 0.1s ease-in-out;
+}
+
+.dropdown:hover button {
+    background-color: #005f99;
+}
+
+.symbol-max {
+    background-color: #2e7d32; /* Dark Green */
+    color: #ffffff;
+}
+
+/* Boss Crystal dropdown styles in the navbar */
+#navbar .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Add invisible padding area around dropdown to increase hover area */
+#navbar .dropdown::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    z-index: -1;
+}
+
+#navbar .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-top: 2px;
+    /* Add invisible padding around content for larger hover area */
+    padding: 5px 0;
+    /* Add a small transition delay to prevent immediate closing */
+    transition: opacity 0.1s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* When dropdown is hovered, show content with delay */
+#navbar .dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+    animation: fadeIn 0.1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#navbar .dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#navbar .dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+#navbar .dropdown:hover button {
+    background-color: #005f99;
+}
+
+#navbar .dropdownBtn {
+    background-color: #007acc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
